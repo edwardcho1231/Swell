@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../actions/actions';
 import BarGraph from "../display/BarGraph"
@@ -18,19 +18,19 @@ export const ContentsContainer = () => {
   const [showGraph, setShowGraph] = useState(false);
   const {api} = window;
 
-  api.receive('testResult', (result) => {
-    const res = JSON.parse(result);
-    console.log(res);
-    if(!res) {
-      console.log('Test passed!')
-    } else {
-      console.log(res.message, '/\n', `Expect ${res.actual} to be ${res.expected}`)
-    }
-  })
+  useEffect(()=> {
+    api.receive('testResult', (result) => {
+      const res = JSON.parse(result);
+      if(!res.message) {
+        console.log('Test passed!')
+      } else {
+        console.log(res.message)
+      }
+    })
+  }, [])
 
   const click = async () => {
     try{
-      console.log(testInput);
       api.send('testFileSent', testInput)
     }
     catch(e) {

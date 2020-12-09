@@ -214,18 +214,10 @@ export default function RestContainer({
             <label htmlFor="SSEswitch" />
         </div>
 
-        <TestEntryForm
-            warningMessage={warningMessage}
-            newRequestBody={newRequestBody}
-            setNewRequestBody={setNewRequestBody}
-            newRequestHeaders={newRequestHeaders}
-            setNewRequestHeaders={setNewRequestHeaders}
-          />
-
-          //Initial REST:GET Testing area
+        Testing area
         <div className='is-neutral-200-box p-3 mt-1'>
           <CodeMirror
-            value={""}
+            value={testContent}
             autoCursor={false}
             options={{
               mode: 'javascript',
