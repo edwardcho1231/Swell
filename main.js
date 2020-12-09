@@ -660,11 +660,17 @@ ipcMain.on('testFileSent', (event, args) => {
     },
   })
 
-  const prompts = args.split(/\s{2,}/g)
+  const prompts = args.split(/assert|expect/g).slice(1);
+
   const promptsArray = prompts.map(ele=> (
     `try {
-      const res = ${ele};
-      addOne(res)
+      if(${JSON.stringify(ele[0])} === '.') {
+        const res = assert${ele};
+        addOne(res);
+      } else if (${JSON.stringify(ele[0])} === '(') {
+        const res = expect${ele};
+        addOne(res);
+      }
     } catch(e) {
       addOne(e)
     }
@@ -680,6 +686,7 @@ ipcMain.on('testFileSent', (event, args) => {
   try{
     vm.run(testScript3, 'main.js'); // error should be thrown
     console.log('RESULT', result);
+    console.log('RESULT', result[1].__flags);
     event.sender.send("testResult", JSON.stringify('Test passed'));
   } 
   catch (err) {
